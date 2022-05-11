@@ -18,10 +18,10 @@ const MakeAppoinment = () => {
                 <img src={doctor} alt="" />
             </div>
             <div className='flex-1'>
-                <h3 className='text-xl text-primary'>Appoinment</h3>
-                <h2 className='text-3xl text-white'>Make an Appoinment Today</h2>
+                <h3 className='text-xl text-primary sm:text-center'>Appoinment</h3>
+                <h2 className='text-3xl text-white sm:text-center'>Make an Appoinment Today</h2>
                 <p className=' text-white'>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Corporis accusamus tempore hic aspernatur modi sapiente? Deleniti doloribus aspernatur eaque atque pariatur cupiditate, aliquid velit, quibusdam accusamus ut asperiores nihil alias nobis reiciendis beatae temporibus quaerat, fugit aperiam culpa! Assumenda, omnis.</p>
-                <PrimaryButton>Get Started</PrimaryButton>
+                <PrimaryButton className="sm:flex justify-center">Get Started</PrimaryButton>
             </div>
         </section>
     );
