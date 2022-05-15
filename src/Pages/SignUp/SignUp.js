@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
-import { useCreateUserWithEmailAndPassword, useSignInWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
+import { useCreateUserWithEmailAndPassword, useSignInWithEmailAndPassword, useSignInWithGoogle, useUpdateProfile } from 'react-firebase-hooks/auth';
 import { useForm } from 'react-hook-form';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import auth from '../../firebase.init';
+import Loading from '../../Shared/Loading/Loading';
 
 const SignUp = () => {
     const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
@@ -13,6 +14,7 @@ const SignUp = () => {
         loading,
         error,
     ] = useCreateUserWithEmailAndPassword(auth);
+    const [updateProfile, updating, upadteError] = useUpdateProfile(auth);
 
     let signInError;
     const navigate = useNavigate();
@@ -20,21 +22,26 @@ const SignUp = () => {
     let from = location.state?.from?.pathname || "/";
 
     useEffect(() => {
-        if (user || gUser) {
-            navigate(from, { replace: true });
-        }
+
     }, [user, gUser, from, navigate])
 
-    // if (loading || gLoading) {
-    //     return <Loading></Loading>
-    // }
-
-    if (error || gError) {
-        signInError = <p className='text-red-500 text-center'><small>{error?.message || gError?.message}</small></p>
+    if (loading || gLoading || updating) {
+        return <Loading></Loading>
     }
 
-    const onSubmit = data => {
-        createUserWithEmailAndPassword(data.email, data.password);
+    if (error || gError || upadteError) {
+        signInError = <p className='text-red-500 text-center'><small>{error?.message || gError?.message || upadteError?.message}</small></p>
+    }
+
+    const onSubmit = async data => {
+        await createUserWithEmailAndPassword(data.email, data.password);
+        await updateProfile({ displayName: data.name });
+        console.log('updated');
+        navigate('/appointment')
+    }
+
+    if (user || gUser) {
+        navigate(from, { replace: true });
     }
     return (
         <div className='flex h-screen justify-center items-center'>

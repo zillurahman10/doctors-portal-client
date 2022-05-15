@@ -2,10 +2,16 @@ import React, { useEffect } from 'react';
 import { useSignInWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
 import auth from '../../firebase.init';
 import { useForm } from "react-hook-form";
-// import Loading from '../Shared/Loading';
+import { Swal } from 'sweetalert2'
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import Loading from '../../Shared/Loading/Loading';
 
 const Login = () => {
+    // Swal.fire({
+    //     icon: 'error',
+    //     title: 'Oops...',
+    //     text: 'Please login first'
+    // })
     const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
     const { register, formState: { errors }, handleSubmit } = useForm();
     const [
@@ -26,9 +32,9 @@ const Login = () => {
         }
     }, [user, gUser, from, navigate])
 
-    // if (loading || gLoading) {
-    //     return <Loading></Loading>
-    // }
+    if (loading || gLoading) {
+        return <Loading></Loading>
+    }
 
     if (error || gError) {
         signInError = <p className='text-red-500 text-center'><small>{error?.message || gError?.message}</small></p>
